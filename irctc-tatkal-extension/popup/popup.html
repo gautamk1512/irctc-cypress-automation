@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IRCTC Tatkal SuperFast Pro</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <div class="logo-badge">⚡</div>
+        <div>
+          <h1 class="brand-title">Tatkal Pro</h1>
+          <span class="brand-sub">IRCTC Automation Suite</span>
+        </div>
+      </div>
+      <div class="master-toggle-wrap">
+        <label class="switch">
+          <input type="checkbox" id="master-toggle" checked>
+          <span class="slider round"></span>
+        </label>
+        <span class="toggle-label" id="toggle-status-text">ACTIVE</span>
+      </div>
+    </header>
+
+    <!-- Server & Tatkal Status Strip -->
+    <div class="status-strip">
+      <div class="status-pill" id="ocr-status-pill">
+        <span class="status-dot offline" id="ocr-dot"></span>
+        <span id="ocr-status-text">OCR: Checking...</span>
+      </div>
+      <div class="status-pill info" id="tatkal-sync-pill">
+        <span>⏱ Tatkal: <strong id="tatkal-time-badge">10:00 AM (AC)</strong></span>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" data-tab="tab-journey">🚄 Journey</button>
+      <button class="tab-btn" data-tab="tab-passengers">👥 Passengers</button>
+      <button class="tab-btn" data-tab="tab-login">🔐 Login & OCR</button>
+      <button class="tab-btn" data-tab="tab-payment">💳 Payment</button>
+    </nav>
+
+    <!-- Tab 1: Journey Details -->
+    <section class="tab-content active" id="tab-journey">
+      <div class="form-grid">
+        <div class="form-group col-6">
+          <label>From Station Code</label>
+          <input type="text" id="source-station" placeholder="e.g. NDLS, SDAH" uppercase>
+        </div>
+        <div class="form-group col-6">
+          <label>To Station Code</label>
+          <input type="text" id="dest-station" placeholder="e.g. CNB, DBG, BSB" uppercase>
+        </div>
+
+        <div class="form-group col-12">
+          <label>Journey Date (DD/MM/YYYY)</label>
+          <div class="input-with-shortcuts">
+            <input type="date" id="travel-date-picker">
+            <button type="button" class="btn-sm" id="btn-date-tomorrow">Tomorrow (Tatkal)</button>
+          </div>
+        </div>
+
+        <div class="form-group col-6">
+          <label>Train Number</label>
+          <input type="text" id="train-no" placeholder="e.g. 12318">
+        </div>
+        <div class="form-group col-6">
+          <label>Coach Class</label>
+          <select id="train-coach">
+            <option value="3A">3A (AC 3 Tier)</option>
+            <option value="2A">2A (AC 2 Tier)</option>
+            <option value="SL">SL (Sleeper)</option>
+            <option value="3E">3E (AC 3 Economy)</option>
+            <option value="1A">1A (AC 1st Class)</option>
+            <option value="CC">CC (AC Chair Car)</option>
+            <option value="EC">EC (Exec. Chair Car)</option>
+            <option value="2S">2S (Second Sitting)</option>
+          </select>
+        </div>
+
+        <div class="form-group col-12">
+          <label>Booking Quota</label>
+          <select id="quota">
+            <option value="TATKAL">TATKAL</option>
+            <option value="PREMIUM_TATKAL">PREMIUM TATKAL</option>
+            <option value="GENERAL">GENERAL</option>
+            <option value="LADIES">LADIES</option>
+            <option value="SENIOR_CITIZEN">SENIOR CITIZEN</option>
+          </select>
+        </div>
+
+        <div class="form-group col-12">
+          <label>Boarding Station (Optional full name)</label>
+          <input type="text" id="boarding-station" placeholder="Leave empty for default">
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 2: Passengers -->
+    <section class="tab-content" id="tab-passengers">
+      <div class="passengers-header">
+        <span>Passenger List (<span id="passenger-count">1</span>/6)</span>
+        <button type="button" class="btn-sm primary" id="btn-add-passenger">+ Add Passenger</button>
+      </div>
+
+      <div id="passenger-list-container" class="passenger-list">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="preferences-box">
+        <label class="checkbox-row">
+          <input type="checkbox" id="confirm-berths-only" checked>
+          <span>Book only if confirm berths are allotted</span>
+        </label>
+        <label class="checkbox-row">
+          <input type="checkbox" id="auto-upgrade" checked>
+          <span>Consider for Auto Upgradation</span>
+        </label>
+        <div class="form-group mt-2">
+          <label>Mobile Number (for SMS confirmation)</label>
+          <input type="tel" id="mobile-number" placeholder="10-digit mobile number" maxlength="10">
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Login & Captcha -->
+    <section class="tab-content" id="tab-login">
+      <div class="form-group">
+        <label class="checkbox-row">
+          <input type="checkbox" id="auto-login-toggle" checked>
+          <strong>Enable Auto-Login</strong>
+        </label>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group col-6">
+          <label>IRCTC Username</label>
+          <input type="text" id="irctc-username" placeholder="Username">
+        </div>
+        <div class="form-group col-6">
+          <label>IRCTC Password</label>
+          <input type="password" id="irctc-password" placeholder="Password">
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="form-group">
+        <label>Captcha Solver Engine</label>
+        <select id="captcha-mode">
+          <option value="server">Local Python EasyOCR (Port 5000) - Recommended</option>
+          <option value="manual">Manual Assist (Auto-focus + Sound Alert)</option>
+        </select>
+        <span class="help-text">Runs on your PC via <code>npm run start-captha-server</code></span>
+      </div>
+
+      <div class="form-group">
+        <label>Local OCR Server Endpoint</label>
+        <div class="input-with-button">
+          <input type="text" id="captcha-server-url" value="http://localhost:5000/extract-text">
+          <button type="button" class="btn-sm" id="btn-test-ocr">Test Ping</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="checkbox-row">
+          <input type="checkbox" id="sound-alerts" checked>
+          <span>Enable Sound Chimes (Captcha Solved / Payment Ready)</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Tab 4: Payment -->
+    <section class="tab-content" id="tab-payment">
+      <div class="form-group">
+        <label>Payment Method</label>
+        <select id="payment-method">
+          <option value="bhim_qr">BHIM UPI QR Code (Fastest - Scan via PhonePe/GPay)</option>
+          <option value="upi_id">UPI ID (Send Collect Request)</option>
+          <option value="irctc_ipay">IRCTC iPay Gateway</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="upi-id-group">
+        <label>UPI ID (VPA)</label>
+        <input type="text" id="upi-id" placeholder="e.g. 9876543210@paytm or user@okhdfcbank">
+        <span class="help-text">Direct collect request will be sent to your UPI app.</span>
+      </div>
+
+      <div class="form-group">
+        <label class="checkbox-row">
+          <input type="checkbox" id="auto-submit-payment" checked>
+          <span>Auto-select BHIM UPI & click 'Pay & Book'</span>
+        </label>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-title">⚡ Speed Tip for Tatkal</div>
+        <p>Using <strong>BHIM UPI QR Code</strong> is the fastest method. The QR code renders on screen in under 2 seconds, which you can scan with your smartphone immediately without waiting for a bank SMS OTP.</p>
+      </div>
+    </section>
+
+    <!-- Footer Action Bar -->
+    <footer class="footer">
+      <button type="button" class="btn btn-secondary" id="btn-open-irctc">🌐 Open IRCTC</button>
+      <button type="button" class="btn btn-primary" id="btn-save">💾 Save Settings</button>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Settings Saved Successfully!</div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
