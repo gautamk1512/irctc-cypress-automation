@@ -2,11 +2,11 @@
 
 const DEFAULT_CONFIG = {
   enabled: true,
-  trainNo: "12318",
+  trainNo: "12566",
   trainCoach: "3A",
-  travelDate: "",
+  travelDate: "2026-09-27",
   sourceStation: "NDLS",
-  destinationStation: "CNB",
+  destinationStation: "MFP",
   boardingStation: "",
   quota: "TATKAL", // TATKAL, PREMIUM_TATKAL, GENERAL, LADIES, SENIOR_CITIZEN
   autoBookAtTatkalTime: true,
@@ -15,7 +15,7 @@ const DEFAULT_CONFIG = {
   reservationChoice: "99", // 99 = None, 1 = Book only if 1 lower berth allotted, etc.
   travelInsurance: "yes", // yes | no
   mobileNumber: "9876543210",
-  username: "",
+  username: "gotiamps",
   password: "",
   autoLogin: true,
   captchaMode: "server", // "server" (EasyOCR port 5000), "client" (Canvas OCR), "manual"
@@ -27,10 +27,10 @@ const DEFAULT_CONFIG = {
   soundAlerts: true,
   passengers: [
     {
-      name: "SHIVAM PANDEY",
+      name: "GAUTAM SINGH",
       age: "26",
       gender: "Male",
-      berth: "Side Upper",
+      berth: "Lower",
       food: "No Food"
     }
   ]

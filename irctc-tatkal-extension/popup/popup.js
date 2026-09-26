@@ -74,16 +74,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       config = {
         enabled: true,
         sourceStation: "NDLS",
-        destStation: "CNB",
-        trainNo: "12318",
+        destStation: "MFP",
+        trainNo: "12566",
         trainCoach: "3A",
+        travelDate: "2026-09-27",
         quota: "TATKAL",
         boardingStation: "",
         confirmBerthsOnly: true,
         autoUpgrade: true,
         mobileNumber: "9876543210",
         autoLogin: true,
-        username: "",
+        username: "gotiamps",
         password: "",
         captchaMode: "server",
         captchaServerUrl: "http://localhost:5000/extract-text",
@@ -93,10 +94,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         autoSubmitPayment: true,
         passengers: [
           {
-            name: "SHIVAM PANDEY",
+            name: "GAUTAM SINGH",
             age: "26",
             gender: "Male",
-            berth: "Side Upper",
+            berth: "Lower",
             food: "No Food"
           }
         ]
